@@ -2,6 +2,8 @@ import sqlite3 as sql
 
 DB_PATH = "F:\\Examenes Entrevistas\\Intercorp Retail\\Prueba_Python_Cloud\\database\\client.db"
 
+
+
 def createDB():
     conn = sql.connect(DB_PATH)
     cursor = conn.cursor()

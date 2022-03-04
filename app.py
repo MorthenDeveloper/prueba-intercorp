@@ -1,11 +1,10 @@
-import json
 from flask import Flask, jsonify,request
 from Models import db,Client
 from logging import exception
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database\\client.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///client.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False 
 #INICIA APP, VINCULA EL MODELO CON LA DB
 db.init_app(app)
@@ -40,6 +39,30 @@ def getClient(ID):
     except Exception:
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}),500
+
+@app.route("/api/createClients",methods=["POST"])
+def createClient():
+    try:      
+        json = request.get_json(force=True)
+
+        if json.get("ID") is None:
+            return jsonify({"msg": "Bad request"}),400
+
+        client = Client.create(
+            json["ID"],
+            json["name_client"],
+            json["age"],
+            json["country"],
+            json["score"]
+            )
+
+        return jsonify({"client": client.serialize()})
+
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}),500
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=4000)

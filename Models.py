@@ -28,3 +28,25 @@ class Client(db.Model):
             "country": self.country,
             "score": self.score
         }
+    def create(var_ID,var_name,var_age,var_country,var_score):
+        client = Client(
+            ID=var_ID,
+            name_client=var_name,
+            age = var_age,
+            country= var_country,
+            score= var_score
+            )
+        
+        return client.save()
+
+    def save(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+
+            return self
+
+        except:
+
+            return False
+    
